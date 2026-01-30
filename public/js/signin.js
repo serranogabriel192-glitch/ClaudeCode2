@@ -20,14 +20,19 @@ form.addEventListener("submit", async (e) => {
     }
 
     const visitor = await res.json();
-    alertEl.innerHTML = `<div class="alert alert-success">
-      Welcome, <strong>${visitor.visitor_name}</strong>! You are signed in.
-      ${visitor.host_name ? `Your host <strong>${visitor.host_name}</strong> has been notified.` : ""}
-    </div>`;
     form.reset();
 
-    // Auto-redirect to welcome screen after 5 seconds
-    setTimeout(() => { window.location.href = "/"; }, 5000);
+    // Redirect to badge print page
+    const bp = new URLSearchParams({
+      id: visitor.id,
+      name: visitor.visitor_name || "",
+      company: visitor.company || "",
+      host: visitor.host_name || "",
+      purpose: visitor.purpose || "",
+      badge: visitor.badge_number || visitor.id,
+      time: visitor.sign_in_time || "",
+    });
+    window.location.href = `/badge.html?${bp.toString()}`;
   } catch (err) {
     alertEl.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
   }

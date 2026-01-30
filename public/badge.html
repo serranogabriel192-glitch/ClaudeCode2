@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitor Badge</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ── Screen layout ──────────────────────────────── */
+    .badge-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+
+    .badge-screen .screen-msg {
+      font-size: 1.1rem;
+      color: var(--gray-3);
+    }
+
+    .screen-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    /* ── Badge card ─────────────────────────────────── */
+    .visitor-badge {
+      width: 400px;
+      border: 3px solid var(--blue);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    }
+
+    .badge-header {
+      background: var(--blue);
+      color: var(--white);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .badge-header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .badge-header p {
+      font-size: .85rem;
+      opacity: .85;
+      margin-top: .25rem;
+    }
+
+    .badge-type {
+      background: var(--green);
+      color: var(--white);
+      text-align: center;
+      padding: .4rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .badge-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .badge-field {
+      margin-bottom: .85rem;
+    }
+
+    .badge-field .label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--gray-3);
+      font-weight: 600;
+    }
+
+    .badge-field .value {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #111;
+      margin-top: .1rem;
+    }
+
+    .badge-field.name-field .value {
+      font-size: 1.5rem;
+      color: var(--blue);
+    }
+
+    .badge-footer {
+      border-top: 1px solid var(--gray-2);
+      padding: .75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: .8rem;
+      color: var(--gray-3);
+    }
+
+    /* ── Print styles ───────────────────────────────── */
+    @media print {
+      body { background: white; }
+
+      .screen-msg,
+      .screen-actions,
+      .topbar {
+        display: none !important;
+      }
+
+      .badge-screen {
+        min-height: auto;
+        padding: 0;
+        margin: 0;
+      }
+
+      .visitor-badge {
+        width: 3.5in;
+        border: 2px solid #000;
+        box-shadow: none;
+        border-radius: 8px;
+        margin: 0;
+        page-break-inside: avoid;
+      }
+
+      .badge-header {
+        background: #000 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .badge-type {
+        background: #333 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .badge-field.name-field .value {
+        color: #000;
+      }
+
+      @page {
+        size: 4in 3.5in;
+        margin: 0.15in;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="badge-screen">
+    <div class="visitor-badge" id="badge">
+      <div class="badge-header">
+        <h1 id="orgName">VISITOR</h1>
+        <p>Visitor Badge</p>
+      </div>
+      <div class="badge-type">VISITOR</div>
+      <div class="badge-body">
+        <div class="badge-field name-field">
+          <div class="label">Name</div>
+          <div class="value" id="bName">—</div>
+        </div>
+        <div class="badge-field">
+          <div class="label">Company</div>
+          <div class="value" id="bCompany">—</div>
+        </div>
+        <div class="badge-field">
+          <div class="label">Visiting</div>
+          <div class="value" id="bHost">—</div>
+        </div>
+        <div class="badge-field">
+          <div class="label">Purpose</div>
+          <div class="value" id="bPurpose">—</div>
+        </div>
+      </div>
+      <div class="badge-footer">
+        <span id="bDate">—</span>
+        <span>Badge #<strong id="bBadge">—</strong></span>
+      </div>
+    </div>
+
+    <p class="screen-msg">Badge is ready. Print or return to the kiosk.</p>
+
+    <div class="screen-actions">
+      <button class="btn btn-primary btn-lg" onclick="window.print()">Print Badge</button>
+      <a href="/" class="btn btn-outline btn-lg">Done</a>
+    </div>
+  </div>
+
+  <script>
+    function esc(str) {
+      const d = document.createElement("div");
+      d.textContent = str || "";
+      return d.innerHTML;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+
+    document.getElementById("bName").textContent = params.get("name") || "—";
+    document.getElementById("bCompany").textContent = params.get("company") || "—";
+    document.getElementById("bHost").textContent = params.get("host") || "—";
+    document.getElementById("bPurpose").textContent = params.get("purpose") || "—";
+    document.getElementById("bBadge").textContent = params.get("badge") || params.get("id") || "—";
+
+    var signIn = params.get("time");
+    if (signIn) {
+      document.getElementById("bDate").textContent = signIn;
+    } else {
+      document.getElementById("bDate").textContent = new Date().toLocaleString();
+    }
+  </script>
+</body>
+</html>
