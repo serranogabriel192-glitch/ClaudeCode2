@@ -18,6 +18,8 @@ try {
   // no .env file — that's fine
 }
 
+const crypto = require("crypto");
+
 const email = require("./src/email");
 email.init();
 
@@ -30,8 +32,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// --- Admin auth ---
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Letmein2026";
+const adminTokens = new Set();
+
+app.post("/api/admin/login", (req, res) => {
+  const { password } = req.body;
+  if (password === ADMIN_PASSWORD) {
+    const token = crypto.randomBytes(32).toString("hex");
+    adminTokens.add(token);
+    return res.json({ token });
+  }
+  res.status(401).json({ error: "Invalid password." });
+});
+
+function requireAdmin(req, res, next) {
+  const token = req.headers["x-admin-token"];
+  if (token && adminTokens.has(token)) return next();
+  res.status(401).json({ error: "Unauthorized. Please log in." });
+}
+
 app.use("/api/visitors", visitorsRouter);
-app.use("/api/admin", adminRouter);
+app.use("/api/admin", requireAdmin, adminRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

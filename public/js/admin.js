@@ -1,19 +1,83 @@
 let currentOffset = 0;
 const PAGE_SIZE = 50;
+let adminToken = sessionStorage.getItem("adminToken") || null;
 
-loadStats();
-loadCurrent();
-loadHistory();
+// Check auth on load
+checkAuth();
+
+function checkAuth() {
+  if (!adminToken) {
+    showLogin();
+    return;
+  }
+  // Verify token is still valid
+  fetch("/api/admin/stats", {
+    headers: { "x-admin-token": adminToken },
+  }).then((res) => {
+    if (res.ok) {
+      showDashboard();
+    } else {
+      adminToken = null;
+      sessionStorage.removeItem("adminToken");
+      showLogin();
+    }
+  });
+}
+
+function showLogin() {
+  document.getElementById("loginGate").style.display = "flex";
+  document.getElementById("dashboard").style.display = "none";
+}
+
+function showDashboard() {
+  document.getElementById("loginGate").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  loadStats();
+  loadCurrent();
+  loadHistory();
+}
+
+async function doLogin() {
+  var pw = document.getElementById("adminPw").value;
+  var errEl = document.getElementById("loginError");
+  errEl.textContent = "";
+
+  try {
+    var res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pw }),
+    });
+
+    if (!res.ok) {
+      errEl.textContent = "Invalid password.";
+      return;
+    }
+
+    var data = await res.json();
+    adminToken = data.token;
+    sessionStorage.setItem("adminToken", adminToken);
+    showDashboard();
+  } catch (_) {
+    errEl.textContent = "Login failed. Try again.";
+  }
+}
+
+function adminFetch(url) {
+  return fetch(url, { headers: { "x-admin-token": adminToken } });
+}
 
 // Auto-refresh every 30 seconds
 setInterval(() => {
+  if (!adminToken) return;
   loadStats();
   loadCurrent();
 }, 30000);
 
 async function loadStats() {
   try {
-    const res = await fetch("/api/admin/stats");
+    const res = await adminFetch("/api/admin/stats");
+    if (!res.ok) return;
     const data = await res.json();
     const t = data.today;
     document.getElementById("stats").innerHTML = `
@@ -45,6 +109,7 @@ async function loadCurrent() {
           <td>${esc(v.company || "—")}</td>
           <td>${esc(v.host_name)}</td>
           <td>${esc(v.purpose)}</td>
+          <td>${esc(v.badge_number || "—")}</td>
           <td>${formatDT(v.sign_in_time)}</td>
           <td><button class="btn btn-danger btn-sm" onclick="adminSignOut(${v.id})">Sign Out</button></td>
         </tr>`
@@ -55,7 +120,8 @@ async function loadCurrent() {
 
 async function loadHistory() {
   try {
-    const res = await fetch(`/api/admin/history?limit=${PAGE_SIZE}&offset=${currentOffset}`);
+    const res = await adminFetch(`/api/admin/history?limit=${PAGE_SIZE}&offset=${currentOffset}`);
+    if (!res.ok) return;
     const data = await res.json();
 
     document.getElementById("historyBody").innerHTML = data.rows
@@ -65,6 +131,7 @@ async function loadHistory() {
           <td>${esc(v.company || "—")}</td>
           <td>${esc(v.host_name)}</td>
           <td>${esc(v.purpose)}</td>
+          <td>${esc(v.badge_number || "—")}</td>
           <td>${formatDT(v.sign_in_time)}</td>
           <td>${v.sign_out_time ? formatDT(v.sign_out_time) : "—"}</td>
           <td>${v.status === "signed_in"
@@ -98,6 +165,12 @@ function prevPage() {
 function nextPage() {
   currentOffset += PAGE_SIZE;
   loadHistory();
+}
+
+function adminLogout() {
+  adminToken = null;
+  sessionStorage.removeItem("adminToken");
+  showLogin();
 }
 
 function esc(str) {
