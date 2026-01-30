@@ -12,6 +12,8 @@ router.post("/signin", (req, res) => {
     return res.status(400).json({ error: "Visitor name and host name are required." });
   }
 
+  const assignedBadge = db.nextBadgeNumber();
+
   const result = db.insert.run({
     visitor_name: visitor_name.trim(),
     company: company?.trim() || null,
@@ -20,7 +22,7 @@ router.post("/signin", (req, res) => {
     host_name: host_name.trim(),
     host_email: host_email?.trim() || null,
     purpose: purpose || "Meeting",
-    badge_number: badge_number?.trim() || null,
+    badge_number: assignedBadge,
     notes: notes?.trim() || null,
     pre_registered: 0,
   });

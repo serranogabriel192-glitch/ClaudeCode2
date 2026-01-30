@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visitor Badge</title>
+  <title>Visitor Badge — Flyer Defense</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     /* ── Screen layout ──────────────────────────────── */
@@ -15,6 +15,7 @@
       min-height: 100vh;
       padding: 2rem;
       gap: 1.5rem;
+      background: var(--gray-1);
     }
 
     .badge-screen .screen-msg {
@@ -30,40 +31,40 @@
     /* ── Badge card ─────────────────────────────────── */
     .visitor-badge {
       width: 400px;
-      border: 3px solid var(--blue);
-      border-radius: 12px;
+      border: 3px solid #1a1a1a;
+      border-radius: 10px;
       overflow: hidden;
       background: var(--white);
-      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+      box-shadow: 0 4px 20px rgba(0,0,0,.15);
     }
 
     .badge-header {
-      background: var(--blue);
+      background: #1a1a1a;
       color: var(--white);
       text-align: center;
-      padding: 1rem;
+      padding: 1rem 1rem .75rem;
     }
 
-    .badge-header h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin: 0;
+    .badge-header img {
+      height: 36px;
+      filter: brightness(0) invert(1);
+      margin-bottom: .35rem;
     }
 
     .badge-header p {
-      font-size: .85rem;
-      opacity: .85;
-      margin-top: .25rem;
+      font-size: .75rem;
+      opacity: .7;
+      letter-spacing: .05em;
     }
 
     .badge-type {
-      background: var(--green);
-      color: var(--white);
+      background: #c8a84e;
+      color: #1a1a1a;
       text-align: center;
       padding: .4rem;
       font-weight: 700;
       font-size: 1.1rem;
-      letter-spacing: .05em;
+      letter-spacing: .1em;
       text-transform: uppercase;
     }
 
@@ -92,7 +93,7 @@
 
     .badge-field.name-field .value {
       font-size: 1.5rem;
-      color: var(--blue);
+      color: #1a1a1a;
     }
 
     .badge-footer {
@@ -109,8 +110,7 @@
       body { background: white; }
 
       .screen-msg,
-      .screen-actions,
-      .topbar {
+      .screen-actions {
         display: none !important;
       }
 
@@ -118,6 +118,7 @@
         min-height: auto;
         padding: 0;
         margin: 0;
+        background: white;
       }
 
       .visitor-badge {
@@ -130,21 +131,23 @@
       }
 
       .badge-header {
-        background: #000 !important;
+        background: #1a1a1a !important;
         color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .badge-header img {
+        filter: brightness(0) invert(1) !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
       .badge-type {
-        background: #333 !important;
-        color: #fff !important;
+        background: #c8a84e !important;
+        color: #1a1a1a !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-      }
-
-      .badge-field.name-field .value {
-        color: #000;
       }
 
       @page {
@@ -158,7 +161,7 @@
   <div class="badge-screen">
     <div class="visitor-badge" id="badge">
       <div class="badge-header">
-        <h1 id="orgName">VISITOR</h1>
+        <img src="/img/logo.svg" alt="Flyer Defense">
         <p>Visitor Badge</p>
       </div>
       <div class="badge-type">VISITOR</div>
@@ -186,22 +189,16 @@
       </div>
     </div>
 
-    <p class="screen-msg">Badge is ready. Print or return to the kiosk.</p>
+    <p class="screen-msg">Badge is ready. Printing automatically...</p>
 
     <div class="screen-actions">
-      <button class="btn btn-primary btn-lg" onclick="window.print()">Print Badge</button>
-      <a href="/" class="btn btn-outline btn-lg">Done</a>
+      <button class="btn btn-primary btn-lg" onclick="window.print()">Reprint Badge</button>
+      <a href="/" class="btn btn-outline-dark btn-lg">Done</a>
     </div>
   </div>
 
   <script>
-    function esc(str) {
-      const d = document.createElement("div");
-      d.textContent = str || "";
-      return d.innerHTML;
-    }
-
-    const params = new URLSearchParams(window.location.search);
+    var params = new URLSearchParams(window.location.search);
 
     document.getElementById("bName").textContent = params.get("name") || "—";
     document.getElementById("bCompany").textContent = params.get("company") || "—";
@@ -215,6 +212,18 @@
     } else {
       document.getElementById("bDate").textContent = new Date().toLocaleString();
     }
+
+    // Auto-print after a short delay to let the page render
+    setTimeout(function() {
+      window.print();
+    }, 600);
+
+    // Auto-redirect to home after printing (or if print is cancelled)
+    window.addEventListener("afterprint", function() {
+      setTimeout(function() {
+        window.location.href = "/";
+      }, 1500);
+    });
   </script>
 </body>
 </html>

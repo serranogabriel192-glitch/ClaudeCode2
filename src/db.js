@@ -28,9 +28,27 @@ db.exec(`
     pre_registered INTEGER NOT NULL DEFAULT 0
   );
 
+  CREATE TABLE IF NOT EXISTS badge_sequence (
+    id    INTEGER PRIMARY KEY CHECK (id = 1),
+    next_number INTEGER NOT NULL DEFAULT 1
+  );
+
+  INSERT OR IGNORE INTO badge_sequence (id, next_number) VALUES (1, 1);
+
   CREATE INDEX IF NOT EXISTS idx_status ON visitors(status);
   CREATE INDEX IF NOT EXISTS idx_sign_in ON visitors(sign_in_time);
 `);
+
+// Badge number generator: M365-0001, M365-0002, etc.
+const getNextBadge = db.prepare(`SELECT next_number FROM badge_sequence WHERE id = 1`);
+const incrementBadge = db.prepare(`UPDATE badge_sequence SET next_number = next_number + 1 WHERE id = 1`);
+
+function nextBadgeNumber() {
+  const row = getNextBadge.get();
+  const num = row.next_number;
+  incrementBadge.run();
+  return `M365-${String(num).padStart(4, "0")}`;
+}
 
 // --- Queries ---
 
@@ -96,4 +114,5 @@ module.exports = {
   todayStats,
   findPreRegistered,
   checkInPreRegistered,
+  nextBadgeNumber,
 };

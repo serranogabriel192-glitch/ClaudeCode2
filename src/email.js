@@ -19,21 +19,24 @@ function init() {
 async function notifyHost(visitor) {
   if (!transporter || !visitor.host_email) return;
 
-  const from = process.env.NOTIFY_FROM || "reception@yourcompany.com";
+  const from = process.env.NOTIFY_FROM || "reception@flyerdefense.com";
 
   await transporter.sendMail({
     from,
     to: visitor.host_email,
-    subject: `Visitor arrived: ${visitor.visitor_name}`,
+    subject: `Flyer Defense — Visitor arrived: ${visitor.visitor_name}`,
     text: [
-      `Your visitor has arrived at the front desk.`,
+      `Your visitor has arrived at the Flyer Defense front desk.`,
       ``,
       `Name:    ${visitor.visitor_name}`,
       `Company: ${visitor.company || "N/A"}`,
       `Purpose: ${visitor.purpose}`,
+      `Badge:   ${visitor.badge_number || "N/A"}`,
       `Time:    ${visitor.sign_in_time}`,
       ``,
       `Please come to reception to greet your guest.`,
+      ``,
+      `— Flyer Defense Visitor Management`,
     ].join("\n"),
   });
 }

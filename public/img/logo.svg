@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <!-- Circular emblem -->
+  <circle cx="36" cy="40" r="30" stroke="currentColor" stroke-width="3.5" fill="none"/>
+  <circle cx="36" cy="40" r="22" stroke="currentColor" stroke-width="2" fill="none"/>
+  <!-- Stylized F arrow -->
+  <path d="M26 52 L36 28 L46 52 L36 44 Z" fill="currentColor"/>
+  <!-- FLYER text -->
+  <text x="78" y="42" font-family="'Segoe UI',system-ui,sans-serif" font-size="34" font-weight="800" letter-spacing="3" fill="currentColor">FLYER</text>
+  <!-- DEFENSE text -->
+  <text x="78" y="64" font-family="'Segoe UI',system-ui,sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="currentColor">DEFENSE</text>
+</svg>

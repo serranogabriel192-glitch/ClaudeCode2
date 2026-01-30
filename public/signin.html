@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visitor Sign-In</title>
+  <title>Sign In — Flyer Defense</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <div class="topbar">
-    <h1>Visitor Sign-In</h1>
+    <div class="logo"><img src="/img/logo.svg" alt="Flyer Defense" style="color:#fff;filter:brightness(0) invert(1);"></div>
     <div>
       <a href="/">Home</a>
       <a href="/signout.html">Sign Out</a>
@@ -55,23 +55,17 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="required" for="purpose">Purpose of Visit</label>
-            <select id="purpose" name="purpose" required>
-              <option value="Meeting">Meeting</option>
-              <option value="Interview">Interview</option>
-              <option value="Delivery">Delivery</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Contractor">Contractor</option>
-              <option value="Tour">Tour</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="badge_number">Badge Number</label>
-            <input type="text" id="badge_number" name="badge_number" autocomplete="off" placeholder="Optional">
-          </div>
+        <div class="form-group">
+          <label class="required" for="purpose">Purpose of Visit</label>
+          <select id="purpose" name="purpose" required>
+            <option value="Meeting">Meeting</option>
+            <option value="Interview">Interview</option>
+            <option value="Delivery">Delivery</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Contractor">Contractor</option>
+            <option value="Tour">Tour</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         <div class="form-group">
