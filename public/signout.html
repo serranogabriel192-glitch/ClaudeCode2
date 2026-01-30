@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitor Sign-Out</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>Visitor Sign-Out</h1>
+    <div>
+      <a href="/">Home</a>
+      <a href="/signin.html">Sign In</a>
+      <a href="/admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="alert"></div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by name, company, or host..." autofocus>
+      <button class="btn btn-primary" onclick="loadVisitors()">Search</button>
+    </div>
+
+    <div id="visitorList"></div>
+  </div>
+
+  <script src="/js/signout.js"></script>
+</body>
+</html>

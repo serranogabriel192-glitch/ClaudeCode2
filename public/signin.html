@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitor Sign-In</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>Visitor Sign-In</h1>
+    <div>
+      <a href="/">Home</a>
+      <a href="/signout.html">Sign Out</a>
+      <a href="/admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="alert"></div>
+
+    <div class="card">
+      <h2>Sign In</h2>
+      <form id="signinForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required" for="visitor_name">Full Name</label>
+            <input type="text" id="visitor_name" name="visitor_name" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required" for="host_name">Host (Person You're Visiting)</label>
+            <input type="text" id="host_name" name="host_name" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="host_email">Host Email</label>
+            <input type="email" id="host_email" name="host_email" autocomplete="off" placeholder="For arrival notification">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required" for="purpose">Purpose of Visit</label>
+            <select id="purpose" name="purpose" required>
+              <option value="Meeting">Meeting</option>
+              <option value="Interview">Interview</option>
+              <option value="Delivery">Delivery</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Contractor">Contractor</option>
+              <option value="Tour">Tour</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="badge_number">Badge Number</label>
+            <input type="text" id="badge_number" name="badge_number" autocomplete="off" placeholder="Optional">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="2" placeholder="Any additional information"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-lg" style="width:100%;">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/signin.js"></script>
+</body>
+</html>

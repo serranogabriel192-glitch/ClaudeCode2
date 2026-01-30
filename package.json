@@ -1,0 +1,17 @@
+{
+  "name": "visitor-sign-in",
+  "version": "1.0.0",
+  "description": "Visitor sign-in kiosk system — web-based front desk check-in and admin dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["visitor", "sign-in", "kiosk", "check-in"],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.0",
+    "nodemailer": "^6.9.0"
+  }
+}

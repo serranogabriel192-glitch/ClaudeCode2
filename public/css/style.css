@@ -1,0 +1,275 @@
+/* ── Reset & Base ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:    #0078d4;
+  --blue-dk: #005a9e;
+  --green:   #107c10;
+  --red:     #d13438;
+  --gray-1:  #f5f5f5;
+  --gray-2:  #e0e0e0;
+  --gray-3:  #666;
+  --white:   #fff;
+  --shadow:  0 2px 8px rgba(0,0,0,.1);
+  --radius:  8px;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--gray-1);
+  color: #222;
+  min-height: 100vh;
+}
+
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ─────────────────────────────────────────── */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-wide {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Welcome Screen ─────────────────────────────────── */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.welcome h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.welcome p {
+  font-size: 1.15rem;
+  color: var(--gray-3);
+  max-width: 460px;
+}
+
+.welcome .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* ── Buttons ────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: .75rem 2rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.btn:active { transform: scale(.97); }
+
+.btn-primary   { background: var(--blue);  color: var(--white); }
+.btn-primary:hover { background: var(--blue-dk); }
+
+.btn-success   { background: var(--green); color: var(--white); }
+.btn-success:hover { background: #0b5e0b; }
+
+.btn-danger    { background: var(--red);   color: var(--white); }
+.btn-danger:hover  { background: #a52729; }
+
+.btn-outline {
+  background: var(--white);
+  color: var(--blue);
+  border: 2px solid var(--blue);
+}
+.btn-outline:hover { background: var(--blue); color: var(--white); }
+
+.btn-lg { padding: 1rem 3rem; font-size: 1.25rem; }
+
+.btn-sm { padding: .4rem 1rem; font-size: .85rem; }
+
+/* ── Cards ──────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 { margin-bottom: 1rem; }
+
+/* ── Forms ──────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: .35rem;
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: .65rem .85rem;
+  border: 1px solid var(--gray-2);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color .15s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(0,120,212,.15);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.required::after {
+  content: " *";
+  color: var(--red);
+}
+
+/* ── Header / Nav ───────────────────────────────────── */
+.topbar {
+  background: var(--blue);
+  color: var(--white);
+  padding: .75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar h1 { font-size: 1.15rem; font-weight: 600; }
+.topbar a  { color: var(--white); margin-left: 1.25rem; font-size: .9rem; }
+.topbar a:hover { opacity: .8; }
+
+/* ── Tables ─────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+
+th, td {
+  text-align: left;
+  padding: .6rem .75rem;
+  border-bottom: 1px solid var(--gray-2);
+}
+
+th { background: var(--gray-1); font-weight: 600; }
+
+tr:hover { background: #f0f6ff; }
+
+/* ── Status badges ──────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: .2rem .6rem;
+  border-radius: 99px;
+  font-size: .75rem;
+  font-weight: 600;
+}
+
+.badge-in  { background: #dff6dd; color: #0e7a0d; }
+.badge-out { background: #fde7e9; color: #a80000; }
+
+/* ── Stats grid ─────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.stat-card .label {
+  font-size: .85rem;
+  color: var(--gray-3);
+  margin-top: .25rem;
+}
+
+/* ── Alerts ─────────────────────────────────────────── */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.alert-success { background: #dff6dd; color: #0e7a0d; }
+.alert-error   { background: #fde7e9; color: #a80000; }
+
+/* ── Search box ─────────────────────────────────────── */
+.search-box {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-box input {
+  flex: 1;
+  padding: .65rem .85rem;
+  border: 1px solid var(--gray-2);
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+/* ── Visitor list cards (sign-out screen) ───────────── */
+.visitor-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.25rem;
+  margin-bottom: .75rem;
+}
+
+.visitor-card .info h3 { font-size: 1rem; }
+.visitor-card .info p  { font-size: .85rem; color: var(--gray-3); }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .welcome h1 { font-size: 1.8rem; }
+  .btn-lg { padding: .85rem 2rem; font-size: 1.1rem; }
+  .topbar { flex-direction: column; gap: .5rem; text-align: center; }
+}

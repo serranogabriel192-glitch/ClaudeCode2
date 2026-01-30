@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Register Visitor</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>Pre-Register a Visitor</h1>
+    <div>
+      <a href="/">Kiosk</a>
+      <a href="/admin.html">Admin</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="alert"></div>
+
+    <div class="card">
+      <h2>Pre-Registration</h2>
+      <p style="color:var(--gray-3);margin-bottom:1rem;">Enter expected visitor details ahead of time. They will appear in the system ready for check-in.</p>
+      <form id="preregForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required" for="visitor_name">Visitor Name</label>
+            <input type="text" id="visitor_name" name="visitor_name" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required" for="host_name">Host Name</label>
+            <input type="text" id="host_name" name="host_name" required>
+          </div>
+          <div class="form-group">
+            <label for="host_email">Host Email</label>
+            <input type="email" id="host_email" name="host_email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="purpose">Purpose of Visit</label>
+          <select id="purpose" name="purpose">
+            <option value="Meeting">Meeting</option>
+            <option value="Interview">Interview</option>
+            <option value="Delivery">Delivery</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Contractor">Contractor</option>
+            <option value="Tour">Tour</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="2"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">Pre-Register Visitor</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/preregister.js"></script>
+</body>
+</html>

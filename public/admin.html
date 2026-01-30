@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Visitor Sign-In</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>Admin Dashboard</h1>
+    <div>
+      <a href="/">Kiosk</a>
+      <a href="/signin.html">Sign In</a>
+      <a href="/signout.html">Sign Out</a>
+      <a href="/preregister.html">Pre-Register</a>
+      <a href="/api/admin/export" download>Export CSV</a>
+    </div>
+  </div>
+
+  <div class="page-wide">
+    <div class="stats" id="stats"></div>
+
+    <div class="card">
+      <h2>Currently Signed In</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Host</th>
+            <th>Purpose</th>
+            <th>Signed In</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="currentBody"></tbody>
+      </table>
+      <p id="noCurrent" style="display:none;padding:1rem;color:var(--gray-3);text-align:center;">No visitors currently signed in.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h2>Visitor History</h2>
+        <div>
+          <button class="btn btn-sm btn-outline" id="prevBtn" onclick="prevPage()">← Prev</button>
+          <span id="pageInfo" style="margin:0 .5rem;font-size:.85rem;"></span>
+          <button class="btn btn-sm btn-outline" id="nextBtn" onclick="nextPage()">Next →</button>
+        </div>
+      </div>
+      <table style="margin-top:1rem;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Host</th>
+            <th>Purpose</th>
+            <th>Signed In</th>
+            <th>Signed Out</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
