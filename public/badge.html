@@ -6,7 +6,6 @@
   <title>Visitor Badge — Flyer Defense</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* ── Screen layout ──────────────────────────────── */
     .badge-screen {
       display: flex;
       flex-direction: column;
@@ -17,18 +16,9 @@
       gap: 1.5rem;
       background: var(--gray-1);
     }
+    .badge-screen .screen-msg { font-size: 1.1rem; color: var(--gray-3); }
+    .screen-actions { display: flex; gap: 1rem; }
 
-    .badge-screen .screen-msg {
-      font-size: 1.1rem;
-      color: var(--gray-3);
-    }
-
-    .screen-actions {
-      display: flex;
-      gap: 1rem;
-    }
-
-    /* ── Badge card ─────────────────────────────────── */
     .visitor-badge {
       width: 400px;
       border: 3px solid #1a1a1a;
@@ -37,123 +27,95 @@
       background: var(--white);
       box-shadow: 0 4px 20px rgba(0,0,0,.15);
     }
-
     .badge-header {
       background: #1a1a1a;
       color: var(--white);
       text-align: center;
-      padding: 1rem 1rem .75rem;
+      padding: .75rem 1rem .5rem;
     }
-
-    .badge-header img {
-      height: 36px;
-      filter: brightness(0) invert(1);
-      margin-bottom: .35rem;
-    }
-
-    .badge-header p {
-      font-size: .75rem;
-      opacity: .7;
-      letter-spacing: .05em;
-    }
+    .badge-header img { height: 32px; filter: brightness(0) invert(1); margin-bottom: .2rem; }
+    .badge-header p { font-size: .7rem; opacity: .7; letter-spacing: .05em; }
 
     .badge-type {
       background: #c8a84e;
       color: #1a1a1a;
       text-align: center;
-      padding: .4rem;
+      padding: .35rem;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       letter-spacing: .1em;
       text-transform: uppercase;
     }
+    .badge-type.escort { background: #c62828; color: #fff; }
 
-    .badge-body {
-      padding: 1.25rem 1.5rem;
+    .badge-body { padding: 1rem 1.25rem; display: flex; gap: 1rem; }
+    .badge-photo {
+      width: 90px;
+      height: 110px;
+      border-radius: 6px;
+      background: #e0e0e0;
+      overflow: hidden;
+      flex-shrink: 0;
     }
+    .badge-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .badge-details { flex: 1; }
 
-    .badge-field {
-      margin-bottom: .85rem;
-    }
-
+    .badge-field { margin-bottom: .6rem; }
     .badge-field .label {
-      font-size: .7rem;
+      font-size: .65rem;
       text-transform: uppercase;
       letter-spacing: .06em;
       color: var(--gray-3);
       font-weight: 600;
     }
-
     .badge-field .value {
-      font-size: 1.05rem;
+      font-size: .95rem;
       font-weight: 600;
       color: #111;
-      margin-top: .1rem;
+      margin-top: .05rem;
     }
+    .badge-field.name-field .value { font-size: 1.25rem; color: #1a1a1a; }
 
-    .badge-field.name-field .value {
-      font-size: 1.5rem;
-      color: #1a1a1a;
+    .badge-barcode {
+      text-align: center;
+      padding: .5rem 1.25rem;
+      border-top: 1px solid var(--gray-2);
     }
+    .badge-barcode svg { max-width: 100%; height: 40px; }
 
     .badge-footer {
       border-top: 1px solid var(--gray-2);
-      padding: .75rem 1.5rem;
+      padding: .5rem 1.25rem;
       display: flex;
       justify-content: space-between;
-      font-size: .8rem;
+      font-size: .75rem;
       color: var(--gray-3);
     }
 
-    /* ── Print styles ───────────────────────────────── */
     @media print {
       body { background: white; }
-
-      .screen-msg,
-      .screen-actions {
-        display: none !important;
-      }
-
-      .badge-screen {
-        min-height: auto;
-        padding: 0;
-        margin: 0;
-        background: white;
-      }
-
+      .screen-msg, .screen-actions { display: none !important; }
+      .badge-screen { min-height: auto; padding: 0; margin: 0; background: white; }
       .visitor-badge {
-        width: 3.5in;
-        border: 2px solid #000;
-        box-shadow: none;
-        border-radius: 8px;
-        margin: 0;
-        page-break-inside: avoid;
+        width: 3.5in; border: 2px solid #000; box-shadow: none;
+        border-radius: 8px; margin: 0; page-break-inside: avoid;
       }
-
       .badge-header {
-        background: #1a1a1a !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        background: #1a1a1a !important; color: #fff !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
       }
-
       .badge-header img {
         filter: brightness(0) invert(1) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
       }
-
       .badge-type {
-        background: #c8a84e !important;
-        color: #1a1a1a !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
       }
-
-      @page {
-        size: 4in 3.5in;
-        margin: 0.15in;
+      .badge-type.escort {
+        background: #c62828 !important; color: #fff !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
       }
+      @page { size: 4in 4in; margin: 0.1in; }
     }
   </style>
 </head>
@@ -164,25 +126,31 @@
         <img src="/img/logo.svg" alt="Flyer Defense">
         <p>Visitor Badge</p>
       </div>
-      <div class="badge-type">VISITOR</div>
+      <div class="badge-type" id="badgeType">VISITOR</div>
       <div class="badge-body">
-        <div class="badge-field name-field">
-          <div class="label">Name</div>
-          <div class="value" id="bName">—</div>
+        <div class="badge-photo" id="photoBox">
+          <img id="bPhoto" src="" alt="" style="display:none;">
         </div>
-        <div class="badge-field">
-          <div class="label">Company</div>
-          <div class="value" id="bCompany">—</div>
-        </div>
-        <div class="badge-field">
-          <div class="label">Visiting</div>
-          <div class="value" id="bHost">—</div>
-        </div>
-        <div class="badge-field">
-          <div class="label">Purpose</div>
-          <div class="value" id="bPurpose">—</div>
+        <div class="badge-details">
+          <div class="badge-field name-field">
+            <div class="label">Name</div>
+            <div class="value" id="bName">—</div>
+          </div>
+          <div class="badge-field">
+            <div class="label">Company</div>
+            <div class="value" id="bCompany">—</div>
+          </div>
+          <div class="badge-field">
+            <div class="label">Visiting</div>
+            <div class="value" id="bHost">—</div>
+          </div>
+          <div class="badge-field">
+            <div class="label">Access</div>
+            <div class="value" id="bAccess">—</div>
+          </div>
         </div>
       </div>
+      <div class="badge-barcode" id="barcodeBox"></div>
       <div class="badge-footer">
         <span id="bDate">—</span>
         <span>Badge #<strong id="bBadge">—</strong></span>
@@ -190,7 +158,6 @@
     </div>
 
     <p class="screen-msg">Badge is ready. Printing automatically...</p>
-
     <div class="screen-actions">
       <button class="btn btn-primary btn-lg" onclick="window.print()">Reprint Badge</button>
       <a href="/" class="btn btn-outline-dark btn-lg">Done</a>
@@ -203,26 +170,99 @@
     document.getElementById("bName").textContent = params.get("name") || "—";
     document.getElementById("bCompany").textContent = params.get("company") || "—";
     document.getElementById("bHost").textContent = params.get("host") || "—";
-    document.getElementById("bPurpose").textContent = params.get("purpose") || "—";
-    document.getElementById("bBadge").textContent = params.get("badge") || params.get("id") || "—";
 
-    var signIn = params.get("time");
-    if (signIn) {
-      document.getElementById("bDate").textContent = signIn;
-    } else {
-      document.getElementById("bDate").textContent = new Date().toLocaleString();
+    var badge = params.get("badge") || params.get("id") || "—";
+    document.getElementById("bBadge").textContent = badge;
+
+    var access = params.get("access") || "Unescorted";
+    var escort = params.get("escort") === "1";
+    document.getElementById("bAccess").textContent = access + (escort ? " — ESCORT REQUIRED" : "");
+
+    var typeEl = document.getElementById("badgeType");
+    if (escort) {
+      typeEl.textContent = "VISITOR — ESCORT REQUIRED";
+      typeEl.classList.add("escort");
     }
 
-    // Auto-print after a short delay to let the page render
-    setTimeout(function() {
-      window.print();
-    }, 600);
+    var signIn = params.get("time");
+    document.getElementById("bDate").textContent = signIn || new Date().toLocaleString();
 
-    // Auto-redirect to home after printing (or if print is cancelled)
+    // Load photo if available
+    if (params.get("photo") === "1" && params.get("pid")) {
+      fetch("/api/visitors/photo/" + params.get("pid"))
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.photo) {
+            var img = document.getElementById("bPhoto");
+            img.src = d.photo;
+            img.style.display = "block";
+          }
+        })
+        .catch(function() {});
+    }
+
+    // Generate Code 128B barcode
+    function code128B(text) {
+      var START_B = 104;
+      var STOP = 106;
+      var codes = [
+        "11011001100","11001101100","11001100110","10010011000","10010001100",
+        "10001001100","10011001000","10011000100","10001100100","11001001000",
+        "11001000100","11000100100","10110011100","10011011100","10011001110",
+        "10111001100","10011101100","10011100110","11001110010","11001011100",
+        "11001001110","11011100100","11001110100","11101101110","11101001100",
+        "11100101100","11100100110","11101100100","11100110100","11100110010",
+        "11011011000","11011000110","11000110110","10100011000","10001011000",
+        "10001000110","10110001000","10001101000","10001100010","11010001000",
+        "11000101000","11000100010","10110111000","10110001110","10001101110",
+        "10111011000","10111000110","10001110110","11101110110","11010001110",
+        "11000101110","11011101000","11011100010","11011101110","11101011000",
+        "11101000110","11100010110","11101101000","11101100010","11100011010",
+        "11101111010","11001000010","11110001010","10100110000","10100001100",
+        "10010110000","10010000110","10000101100","10000100110","10110010000",
+        "10110000100","10011010000","10011000010","10000110100","10000110010",
+        "11000010010","11001010000","11110111010","11000010100","10001111010",
+        "10100111100","10010111100","10010011110","10111100100","10011110100",
+        "10011110010","11110100100","11110010100","11110010010","11011011110",
+        "11011110110","11110110110","10101111000","10100011110","10001011110",
+        "10111101000","10111100010","11110101000","11110100010","10111011110",
+        "10111101110","11101011110","11110101110","11010000100","11010010000",
+        "11010011100","1100011101011"
+      ];
+
+      var sum = START_B;
+      var encoded = codes[START_B];
+      for (var i = 0; i < text.length; i++) {
+        var val = text.charCodeAt(i) - 32;
+        if (val < 0 || val > 94) val = 0;
+        sum += val * (i + 1);
+        encoded += codes[val];
+      }
+      encoded += codes[sum % 103];
+      encoded += codes[STOP];
+
+      // Build SVG
+      var w = encoded.length;
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + (w + 20) + ' 40">';
+      for (var j = 0; j < encoded.length; j++) {
+        if (encoded[j] === "1") {
+          svg += '<rect x="' + (j + 10) + '" y="0" width="1" height="35" fill="#000"/>';
+        }
+      }
+      svg += '<text x="' + ((w + 20) / 2) + '" y="39" text-anchor="middle" font-family="monospace" font-size="4" fill="#333">' + text + '</text>';
+      svg += '</svg>';
+      return svg;
+    }
+
+    // Render barcode
+    if (badge && badge !== "—") {
+      document.getElementById("barcodeBox").innerHTML = code128B(badge);
+    }
+
+    // Auto-print
+    setTimeout(function() { window.print(); }, 800);
     window.addEventListener("afterprint", function() {
-      setTimeout(function() {
-        window.location.href = "/";
-      }, 1500);
+      setTimeout(function() { window.location.href = "/"; }, 1500);
     });
   </script>
 </body>

@@ -110,6 +110,8 @@ async function loadCurrent() {
           <td>${esc(v.host_name)}</td>
           <td>${esc(v.purpose)}</td>
           <td>${esc(v.badge_number || "—")}</td>
+          <td>${esc(v.access_type || "Unescorted")}${v.escort_required ? ' <span style="color:#c62828;font-weight:600;font-size:.75rem;">ESCORT</span>' : ""}</td>
+          <td>${esc(v.nationality || "—")}</td>
           <td>${formatDT(v.sign_in_time)}</td>
           <td><button class="btn btn-danger btn-sm" onclick="adminSignOut(${v.id})">Sign Out</button></td>
         </tr>`
@@ -132,6 +134,8 @@ async function loadHistory() {
           <td>${esc(v.host_name)}</td>
           <td>${esc(v.purpose)}</td>
           <td>${esc(v.badge_number || "—")}</td>
+          <td>${esc(v.access_type || "Unescorted")}${v.escort_required ? ' <span style="color:#c62828;font-weight:600;font-size:.75rem;">ESCORT</span>' : ""}</td>
+          <td>${esc(v.nationality || "—")}</td>
           <td>${formatDT(v.sign_in_time)}</td>
           <td>${v.sign_out_time ? formatDT(v.sign_out_time) : "—"}</td>
           <td>${v.status === "signed_in"

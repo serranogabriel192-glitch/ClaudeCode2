@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Sign in a visitor
 router.post("/signin", (req, res) => {
-  const { visitor_name, company, email: visitorEmail, phone, host_name, host_email, purpose, badge_number, notes } = req.body;
+  const { visitor_name, company, email: visitorEmail, phone, host_name, host_email, purpose, notes, photo, access_type, escort_required, nationality } = req.body;
 
   if (!visitor_name || !host_name) {
     return res.status(400).json({ error: "Visitor name and host name are required." });
@@ -25,6 +25,10 @@ router.post("/signin", (req, res) => {
     badge_number: assignedBadge,
     notes: notes?.trim() || null,
     pre_registered: 0,
+    photo: photo || null,
+    access_type: access_type || "Unescorted",
+    escort_required: escort_required ? 1 : 0,
+    nationality: nationality?.trim() || null,
   });
 
   const visitor = db.findById.get(result.lastInsertRowid);
@@ -47,6 +51,15 @@ router.post("/signout/:id", (req, res) => {
   res.json(visitor);
 });
 
+// Look up signed-in visitor by badge number (for barcode scanning)
+router.get("/badge/:badge", (req, res) => {
+  const visitor = db.findByBadge.get({ badge: req.params.badge });
+  if (!visitor) {
+    return res.status(404).json({ error: "No signed-in visitor found with that badge." });
+  }
+  res.json(visitor);
+});
+
 // Get all currently signed-in visitors
 router.get("/current", (_req, res) => {
   res.json(db.findSignedIn.all());
@@ -60,7 +73,7 @@ router.get("/search", (req, res) => {
 
 // Pre-register a visitor
 router.post("/preregister", (req, res) => {
-  const { visitor_name, company, email: visitorEmail, phone, host_name, host_email, purpose, notes } = req.body;
+  const { visitor_name, company, email: visitorEmail, phone, host_name, host_email, purpose, notes, access_type, escort_required, nationality } = req.body;
 
   if (!visitor_name || !host_name) {
     return res.status(400).json({ error: "Visitor name and host name are required." });
@@ -77,10 +90,23 @@ router.post("/preregister", (req, res) => {
     badge_number: null,
     notes: notes?.trim() || null,
     pre_registered: 1,
+    photo: null,
+    access_type: access_type || "Unescorted",
+    escort_required: escort_required ? 1 : 0,
+    nationality: nationality?.trim() || null,
   });
 
   const visitor = db.findById.get(result.lastInsertRowid);
   res.status(201).json(visitor);
+});
+
+// Get visitor photo by ID
+router.get("/photo/:id", (req, res) => {
+  const visitor = db.findById.get(Number(req.params.id));
+  if (!visitor || !visitor.photo) {
+    return res.status(404).json({ error: "Photo not found." });
+  }
+  res.json({ photo: visitor.photo });
 });
 
 module.exports = router;

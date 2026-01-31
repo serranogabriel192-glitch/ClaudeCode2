@@ -12,20 +12,24 @@ db.pragma("foreign_keys = ON");
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS visitors (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    visitor_name  TEXT    NOT NULL,
-    company       TEXT,
-    email         TEXT,
-    phone         TEXT,
-    host_name     TEXT    NOT NULL,
-    host_email    TEXT,
-    purpose       TEXT    NOT NULL DEFAULT 'Meeting',
-    badge_number  TEXT,
-    sign_in_time  TEXT    NOT NULL DEFAULT (datetime('now','localtime')),
-    sign_out_time TEXT,
-    status        TEXT    NOT NULL DEFAULT 'signed_in',
-    notes         TEXT,
-    pre_registered INTEGER NOT NULL DEFAULT 0
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    visitor_name    TEXT    NOT NULL,
+    company         TEXT,
+    email           TEXT,
+    phone           TEXT,
+    host_name       TEXT    NOT NULL,
+    host_email      TEXT,
+    purpose         TEXT    NOT NULL DEFAULT 'Meeting',
+    badge_number    TEXT,
+    sign_in_time    TEXT    NOT NULL DEFAULT (datetime('now','localtime')),
+    sign_out_time   TEXT,
+    status          TEXT    NOT NULL DEFAULT 'signed_in',
+    notes           TEXT,
+    pre_registered  INTEGER NOT NULL DEFAULT 0,
+    photo           TEXT,
+    access_type     TEXT    NOT NULL DEFAULT 'Unescorted',
+    escort_required INTEGER NOT NULL DEFAULT 0,
+    nationality     TEXT
   );
 
   CREATE TABLE IF NOT EXISTS badge_sequence (
@@ -37,7 +41,15 @@ db.exec(`
 
   CREATE INDEX IF NOT EXISTS idx_status ON visitors(status);
   CREATE INDEX IF NOT EXISTS idx_sign_in ON visitors(sign_in_time);
+  CREATE INDEX IF NOT EXISTS idx_badge ON visitors(badge_number);
 `);
+
+// Add columns if they don't exist (migration for existing databases)
+try { db.exec(`ALTER TABLE visitors ADD COLUMN photo TEXT`); } catch (_) {}
+try { db.exec(`ALTER TABLE visitors ADD COLUMN access_type TEXT NOT NULL DEFAULT 'Unescorted'`); } catch (_) {}
+try { db.exec(`ALTER TABLE visitors ADD COLUMN escort_required INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+try { db.exec(`ALTER TABLE visitors ADD COLUMN nationality TEXT`); } catch (_) {}
+try { db.exec(`CREATE INDEX IF NOT EXISTS idx_badge ON visitors(badge_number)`); } catch (_) {}
 
 // Badge number generator: M365-0001, M365-0002, etc.
 const getNextBadge = db.prepare(`SELECT next_number FROM badge_sequence WHERE id = 1`);
@@ -53,8 +65,8 @@ function nextBadgeNumber() {
 // --- Queries ---
 
 const insert = db.prepare(`
-  INSERT INTO visitors (visitor_name, company, email, phone, host_name, host_email, purpose, badge_number, notes, pre_registered)
-  VALUES (@visitor_name, @company, @email, @phone, @host_name, @host_email, @purpose, @badge_number, @notes, @pre_registered)
+  INSERT INTO visitors (visitor_name, company, email, phone, host_name, host_email, purpose, badge_number, notes, pre_registered, photo, access_type, escort_required, nationality)
+  VALUES (@visitor_name, @company, @email, @phone, @host_name, @host_email, @purpose, @badge_number, @notes, @pre_registered, @photo, @access_type, @escort_required, @nationality)
 `);
 
 const signOut = db.prepare(`
@@ -68,9 +80,13 @@ const findSignedIn = db.prepare(`
 
 const findById = db.prepare(`SELECT * FROM visitors WHERE id = ?`);
 
+const findByBadge = db.prepare(`
+  SELECT * FROM visitors WHERE badge_number = @badge AND status = 'signed_in' LIMIT 1
+`);
+
 const search = db.prepare(`
   SELECT * FROM visitors
-  WHERE visitor_name LIKE @q OR company LIKE @q OR host_name LIKE @q
+  WHERE visitor_name LIKE @q OR company LIKE @q OR host_name LIKE @q OR badge_number LIKE @q
   ORDER BY sign_in_time DESC
   LIMIT 100
 `);
@@ -107,6 +123,7 @@ module.exports = {
   signOut,
   findSignedIn,
   findById,
+  findByBadge,
   search,
   history,
   countAll,

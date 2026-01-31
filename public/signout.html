@@ -5,6 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Out — Flyer Defense</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .scan-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .scan-section h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+    .scan-tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+    .scan-tab {
+      padding: .5rem 1rem;
+      border: 2px solid var(--gray-2);
+      border-radius: var(--radius);
+      background: var(--white);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .85rem;
+      color: var(--gray-3);
+    }
+    .scan-tab.active { border-color: var(--accent); color: var(--accent); background: #fdf8ea; }
+    .scanner-box {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      position: relative;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .scanner-box video { width: 100%; display: block; }
+    .scanner-overlay {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+      height: 40%;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .scanner-hint {
+      text-align: center;
+      font-size: .85rem;
+      color: var(--gray-3);
+      margin-top: .75rem;
+    }
+    .manual-entry { display: flex; gap: .5rem; max-width: 400px; margin: 0 auto; }
+    .manual-entry input { flex: 1; }
+    .badge-result {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .badge-result .visitor-info { display: flex; gap: 1rem; align-items: center; }
+    .badge-result .visitor-photo {
+      width: 80px; height: 80px; border-radius: 8px;
+      background: var(--gray-2); overflow: hidden; flex-shrink: 0;
+    }
+    .badge-result .visitor-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .badge-result .visitor-details { flex: 1; }
+    .badge-result .visitor-details h3 { margin: 0 0 .25rem; }
+    .badge-result .visitor-details p { margin: 0; color: var(--gray-3); font-size: .9rem; }
+    .badge-result .actions { margin-top: 1rem; display: flex; gap: .5rem; }
+  </style>
 </head>
 <body>
   <div class="topbar">
@@ -19,8 +87,49 @@
   <div class="page">
     <div id="alert"></div>
 
+    <!-- Barcode scanner / manual badge entry -->
+    <div class="scan-section">
+      <h2>Scan Badge or Enter Badge Number</h2>
+      <div class="scan-tabs">
+        <div class="scan-tab active" id="tabScan" onclick="switchTab('scan')">Scan Barcode</div>
+        <div class="scan-tab" id="tabManual" onclick="switchTab('manual')">Enter Badge #</div>
+      </div>
+      <div id="scanPanel">
+        <div class="scanner-box">
+          <video id="scanVideo" autoplay playsinline muted></video>
+          <div class="scanner-overlay"></div>
+        </div>
+        <p class="scanner-hint" id="scanHint">Point camera at the badge barcode</p>
+      </div>
+      <div id="manualPanel" style="display:none;">
+        <div class="manual-entry">
+          <input type="text" id="badgeInput" placeholder="e.g. M365-0001" autofocus>
+          <button class="btn btn-primary" onclick="lookupBadge()">Look Up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badge lookup result -->
+    <div class="badge-result" id="badgeResult">
+      <div class="visitor-info">
+        <div class="visitor-photo" id="resultPhoto" style="display:none;">
+          <img id="resultPhotoImg" src="" alt="">
+        </div>
+        <div class="visitor-details">
+          <h3 id="resultName"></h3>
+          <p id="resultDetails"></p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-danger" onclick="signOutFound()">Sign Out</button>
+        <button class="btn btn-outline-dark" onclick="clearResult()">Cancel</button>
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--gray-2);margin:1rem 0;">
+
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search by name, company, or host..." autofocus>
+      <input type="text" id="searchInput" placeholder="Search by name, company, or host...">
       <button class="btn btn-primary" onclick="loadVisitors()">Search</button>
     </div>
 
